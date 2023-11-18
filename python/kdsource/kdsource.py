@@ -419,6 +419,20 @@ class KDSource:
             kwargs["label"] = "KDE"
         if "adjust_bw" not in kwargs:
             kwargs["adjust_bw"] = False
+        plt.xscale(kwargs["xscale"])
+        plt.yscale(kwargs["yscale"])
+        plt.xlabel(
+            r"${}\ [{}]$".format(self.geom.varnames[var], self.geom.units[var])
+        )
+        plt.ylabel(
+            r"$J\ \left[ \frac{{{}}}{{{}\ s}} \right]$".format(
+                self.plist.pt, self.geom.units[var]
+            )
+        )
+        plt.grid()
+        plt.tight_layout()
+        if len(grid) == 0:
+            return
         trues = np.ones(len(self.kde.data), dtype=bool)
         if vec0 is not None:
             mask1 = np.logical_and.reduce(
@@ -453,19 +467,7 @@ class KDSource:
         plt.errorbar(
             grid, scores, errs, label=kwargs["label"], capsize=1, linewidth=1
         )
-        plt.xscale(kwargs["xscale"])
-        plt.yscale(kwargs["yscale"])
-        plt.xlabel(
-            r"${}\ [{}]$".format(self.geom.varnames[var], self.geom.units[var])
-        )
-        plt.ylabel(
-            r"$J\ \left[ \frac{{{}}}{{{}\ s}} \right]$".format(
-                self.plist.pt, self.geom.units[var]
-            )
-        )
-        plt.grid()
         plt.legend()
-        plt.tight_layout()
 
         return [plt.gcf(), [scores, errs]]
 
